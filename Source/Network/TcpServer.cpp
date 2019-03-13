@@ -7,7 +7,8 @@
 
 #include "TcpServer.hpp"
 
-net::TcpServer::TcpServer(const unsigned short port) :
+net::TcpServer::TcpServer(const unsigned short port, mgr::Manager &manager) :
+	_manager(manager),
 	_acceptor(_ioContext, boost::asio::ip::tcp::endpoint(boost::asio::ip::tcp::v4(), port))
 {
 
@@ -21,7 +22,7 @@ void	net::TcpServer::run()
 
 void	net::TcpServer::listen()
 {
-	Session *session = new Session(_acceptor.get_executor().context());
+	Session *session = new Session(_acceptor.get_executor().context(), *this, _manager);
 
 	_acceptor.async_accept(session->getSocket(),
 			       boost::bind(&TcpServer::handleAccept, this, session,
@@ -44,4 +45,12 @@ void	net::TcpServer::stop()
 {
 	_sessions.clear();
 	_ioContext.stop();
+}
+
+void	net::TcpServer::removeSession(const std::size_t id)
+{
+	_sessions.erase(std::remove_if(_sessions.begin(),
+				       _sessions.end(),
+				       [id](std::shared_ptr<net::Session> s) { return s->getId() == id; }),
+			_sessions.end());
 }

@@ -6,12 +6,12 @@
 //
 
 #include "Epitain.hpp"
-#include "TcpServer.hpp"
+#include "Manager.hpp"
 
 int	main()
 {
-	net::TcpServer server(25565);
+	mgr::Manager manager;
 
-	server.run();
+	manager.run();
 	return 0;
 }

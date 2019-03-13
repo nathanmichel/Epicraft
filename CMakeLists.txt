@@ -8,13 +8,14 @@ include(build/conanbuildinfo.cmake)
 
 include_directories(${CMAKE_SOURCE_DIR}/Include)
 include_directories(${CMAKE_SOURCE_DIR}/Include/Network)
+include_directories(${CMAKE_SOURCE_DIR}/Include/Protocol)
 
 conan_basic_setup()
 add_definitions("-g --std=c++17 -pthread")
 
 
-file(GLOB_RECURSE ssources "Source/*.cpp" "Source/Network/*.cpp")
-file(GLOB_RECURSE sheaders "Include/*.hpp" "Include/Network/*.hpp")
+file(GLOB_RECURSE ssources "Source/*.cpp" "Source/Network/*.cpp" "Source/Protocol/*.cpp")
+file(GLOB_RECURSE sheaders "Include/*.hpp" "Include/Network/*.hpp" "Include/Protocol/*.hpp")
 
 set(slist_include "")
 
