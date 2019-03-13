@@ -25,7 +25,7 @@ foreach(i ${sheader})
 endforeach()
 list(REMOVE_DUPLICATES slist_include)
 
-add_executable(Epitain ${ssources})
-target_include_directories(Epitain PRIVATE ${slist_include})
+add_executable(Epicraft ${ssources})
+target_include_directories(Epicraft PRIVATE ${slist_include})
 
-target_link_libraries(Epitain ${CONAN_LIBS})
+target_link_libraries(Epicraft ${CONAN_LIBS})
