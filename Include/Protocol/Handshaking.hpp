@@ -2,7 +2,7 @@
 // EPITECH PROJECT, 2019
 // Epitain
 // File description:
-// HandshakingProtocol
+// Handshaking
 //
 
 #pragma once
@@ -10,9 +10,9 @@
 #include "Epitain.hpp"
 
 namespace prot {
-	class HandshakingProtocol {
+	class Handshaking {
 	public:
-		HandshakingProtocol();
+		Handshaking();
 
 		void parseProtocol(char *data, int size);
 	};

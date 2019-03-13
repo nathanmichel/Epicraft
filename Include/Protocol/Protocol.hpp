@@ -8,7 +8,7 @@
 #pragma once
 
 #include "Epitain.hpp"
-#include "HandshakingProtocol.hpp"
+#include "Handshaking.hpp"
 
 namespace prot {
 	enum Status {
@@ -25,6 +25,6 @@ namespace prot {
 		void	parseProtocol(char *data, int size, Status &status);
 
 	private:
-		prot::HandshakingProtocol _handshaking;
+		prot::Handshaking	_handshaking;
 	};
 }
