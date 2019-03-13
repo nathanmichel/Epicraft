@@ -1,6 +1,6 @@
 //
 // EPITECH PROJECT, 2019
-// Epitain
+// Epicraft
 // File description:
 // Session
 //
@@ -10,7 +10,7 @@
 #include <boost/asio.hpp>
 #include <boost/bind.hpp>
 #include <boost/array.hpp>
-#include "Epitain.hpp"
+#include "Epicraft.hpp"
 #include "TcpServer.hpp"
 #include "Protocol.hpp"
 

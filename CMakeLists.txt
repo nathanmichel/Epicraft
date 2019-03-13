@@ -1,4 +1,4 @@
-project(Epitain)
+project(Epicraft)
 
 set(CMAKE_CXX_STANDARD 17)
 

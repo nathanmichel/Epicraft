@@ -1,6 +1,6 @@
 //
 // EPITECH PROJECT, 2019
-// Epitain
+// Epicraft
 // File description:
 // TcpServer
 //
@@ -8,7 +8,7 @@
 #pragma once
 
 #include <list>
-#include "Epitain.hpp"
+#include "Epicraft.hpp"
 #include "Session.hpp"
 //#include "Manager.hpp"
 

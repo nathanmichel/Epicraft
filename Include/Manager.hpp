@@ -1,6 +1,6 @@
 //
 // EPITECH PROJECT, 2019
-// Epitain
+// Epicraft
 // File description:
 // Manager
 //
@@ -9,7 +9,7 @@
 
 #include <thread>
 #include <unistd.h>
-#include "Epitain.hpp"
+#include "Epicraft.hpp"
 #include "TcpServer.hpp"
 #include "Protocol.hpp"
 

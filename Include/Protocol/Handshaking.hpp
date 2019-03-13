@@ -1,13 +1,13 @@
 //
 // EPITECH PROJECT, 2019
-// Epitain
+// Epicraft
 // File description:
 // Handshaking
 //
 
 #pragma once
 
-#include "Epitain.hpp"
+#include "Epicraft.hpp"
 
 namespace prot {
 	class Handshaking {

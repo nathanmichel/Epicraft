@@ -1,11 +1,11 @@
 //
 // EPITECH PROJECT, 2019
-// Epitain
+// Epicraft
 // File description:
 // main
 //
 
-#include "Epitain.hpp"
+#include "Epicraft.hpp"
 #include "Manager.hpp"
 
 int	main()

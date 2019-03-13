@@ -1,8 +1,8 @@
 //
 // EPITECH PROJECT, 2019
-// Epitain
+// Epicraft
 // File description:
-// Epitain
+// Epicraft
 //
 
 #pragma once

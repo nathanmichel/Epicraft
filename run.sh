@@ -1,4 +1,4 @@
-# Script to compile and build our cross platform Zia's API
+# Script to compile and build our cross platform Epicraft's Minecraft server
 
 rm -rf build && mkdir build && cd build
 if [[ "$OS" == *"Windows"* ]]; then

@@ -1,6 +1,6 @@
 //
 // EPITECH PROJECT, 2019
-// Epitain
+// Epicraft
 // File description:
 // TcpServer
 //
