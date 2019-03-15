@@ -8,6 +8,7 @@
 #pragma once
 
 #include <vector>
+#include <array>
 
 typedef std::vector<char> buffer_t;
 
@@ -36,3 +37,13 @@ namespace net {
 
 	typedef std::vector<const net::request_t *> requests_t;
 }
+
+namespace game {
+	typedef unsigned char angle_t;
+
+	enum Dimension : int {
+		nether = -1,
+		overworld = 0,
+		end = 1
+	};
+};

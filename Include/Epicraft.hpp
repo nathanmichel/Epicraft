@@ -8,4 +8,6 @@
 #pragma once
 
 #include <iostream>
+#include <vector>
+
 #include "Types.hpp"
