@@ -10,7 +10,6 @@
 #include <list>
 #include "Epicraft.hpp"
 #include "Session.hpp"
-//#include "Manager.hpp"
 
 namespace mgr {
 	class Manager;
@@ -27,6 +26,7 @@ namespace net {
 		void	stop();
 
 		void	removeSession(const std::size_t id);
+		void	putResponse(const net::response_t *response);
 
 	private:
 		void	listen();

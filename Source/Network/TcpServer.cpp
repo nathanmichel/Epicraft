@@ -35,9 +35,9 @@ void	net::TcpServer::handleAccept(Session *session,
 	if (!e) {
 		_sessions.push_front(std::unique_ptr<Session>(session));
 		session->run();
-	}
-	else
+	} else {
 		delete session;
+	}
 	listen();
 }
 
@@ -53,4 +53,14 @@ void	net::TcpServer::removeSession(const std::size_t id)
 				       _sessions.end(),
 				       [id](std::shared_ptr<net::Session> s) { return s->getId() == id; }),
 			_sessions.end());
+}
+
+void	net::TcpServer::putResponse(const net::response_t *response)
+{
+	for (auto session : _sessions) {
+		if (session->getId() == response->id) {
+			session->putResponse(response);
+			return;
+		}
+	}
 }

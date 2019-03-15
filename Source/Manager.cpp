@@ -7,7 +7,7 @@
 
 #include "Manager.hpp"
 
-mgr::Manager::Manager() : _server(25565, *this)
+mgr::Manager::Manager() : _server(25565, *this), _protocol(*this)
 {
 
 }
@@ -21,7 +21,14 @@ void	mgr::Manager::run()
 		sleep(1);
 }
 
-void	mgr::Manager::callback(char *data, int size, prot::Status &status)
+void	mgr::Manager::callbackServer(const net::request_t *request)
 {
-	_protocol.parseProtocol(data, size, status);
+	_protocol.addRequest(request);
+	_thread = std::thread(&prot::Protocol::parseProtocol, &_protocol);
+	_thread.detach();
+}
+
+void	mgr::Manager::callbackProtocol(const net::response_t *response)
+{
+	_server.putResponse(response);
 }

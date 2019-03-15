@@ -2,7 +2,7 @@
 // EPITECH PROJECT, 2019
 // Epicraft
 // File description:
-// Handshaking
+// Status
 //
 
 #pragma once
@@ -14,14 +14,15 @@ namespace mgr {
 }
 
 namespace prot {
-	class Handshaking {
+	class Status {
 	public:
-		Handshaking(mgr::Manager &manager);
+		Status(mgr::Manager &manager);
 
 		void	parseProtocol(const net::request_t *request);
 
 	private:
-		void	parseHandshake(const buffer_t &data, const int size, prot::StateStatus &status);
+		void	getServerInformation(const std::size_t id);
+		void	parsePing(const net::request_t *request);
 
 	private:
 		mgr::Manager	&_manager;
