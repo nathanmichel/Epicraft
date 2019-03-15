@@ -33,4 +33,6 @@ namespace net {
 		int		size;
 		std::size_t	id;
 	}			response_t;
+
+	typedef std::vector<const net::request_t *> requests_t;
 }

@@ -24,8 +24,10 @@ void	mgr::Manager::run()
 void	mgr::Manager::callbackServer(const net::request_t *request)
 {
 	_protocol.addRequest(request);
-	_thread = std::thread(&prot::Protocol::parseProtocol, &_protocol);
-	_thread.detach();
+	if (!_protocol.getIsRunning()) {
+		_thread = std::thread(&prot::Protocol::parseProtocol, &_protocol);
+		_thread.detach();
+	}
 }
 
 void	mgr::Manager::callbackProtocol(const net::response_t *response)

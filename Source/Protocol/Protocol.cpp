@@ -10,7 +10,7 @@
 
 prot::Protocol::Protocol(mgr::Manager &manager) : _manager(manager), _handshaking(manager), _status(manager)
 {
-
+	_isRunning = false;
 }
 
 void	prot::Protocol::addRequest(const net::request_t *request)
@@ -20,20 +20,26 @@ void	prot::Protocol::addRequest(const net::request_t *request)
 
 void	prot::Protocol::parseProtocol()
 {
-	for (auto request : _requests) {
-		if (request->status == prot::handshaking)
-			_handshaking.parseProtocol(request);
-		else if (request->status == prot::status)
-			_status.parseProtocol(request);
-		else if (request->status == prot::login)
+	_isRunning = true;
+	for (std::size_t i = 0 ; i < _requests.size() ; i++) {
+		if (_requests[i]->status == prot::handshaking)
+			_handshaking.parseProtocol(_requests[i]);
+		else if (_requests[i]->status == prot::status)
+			_status.parseProtocol(_requests[i]);
+		else if (_requests[i]->status == prot::login)
 			std::cout << "Login\n";
-		else if (request->status == prot::play)
+		else if (_requests[i]->status == prot::play)
 			std::cout << "Play\n";
 		else
 			std::cerr << "Invalid status\n";
 	}
-	std::cout << "ca clear\n";
 	_requests.clear();
+	_isRunning = false;
+}
+
+bool	prot::Protocol::getIsRunning() const
+{
+	return _isRunning;
 }
 
 int	prot::Protocol::readVarInt(const buffer_t &data, const std::size_t offset, const int size, int &resSize)

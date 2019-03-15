@@ -23,6 +23,8 @@ namespace prot {
 		void	addRequest(const net::request_t *request);
 		void	parseProtocol();
 
+		bool	getIsRunning() const;
+
 		static int	readVarInt(const buffer_t &data, const std::size_t offset,
 					   const int size, int &resSize);
 		static void	writeVarInt(unsigned int value, buffer_t &data);
@@ -32,6 +34,7 @@ namespace prot {
 		mgr::Manager		&_manager;
 		prot::Handshaking	_handshaking;
 		prot::Status		_status;
-		std::vector<const net::request_t *>	_requests;
+		net::requests_t		_requests;
+		bool			_isRunning;
 	};
 }
