@@ -7,6 +7,7 @@ cmake_minimum_required(VERSION 3.5.1)
 include(build/conanbuildinfo.cmake)
 
 include_directories(${CMAKE_SOURCE_DIR}/Include)
+include_directories(${CMAKE_SOURCE_DIR}/Include/Config)
 include_directories(${CMAKE_SOURCE_DIR}/Include/Network)
 include_directories(${CMAKE_SOURCE_DIR}/Include/Protocol)
 include_directories(${CMAKE_SOURCE_DIR}/Include/Miscellaneous)
@@ -16,10 +17,13 @@ add_definitions("-g --std=c++17 -pthread")
 
 file(GLOB_RECURSE ssources
         "Source/*.cpp"
+        "Source/Config/*.cpp"
         "Source/Network/*.cpp"
-        "Source/Protocol/*.cpp")
+        "Source/Protocol/*.cpp"
+        "Source/Miscellaneous/*.cpp")
 file(GLOB_RECURSE sheaders
         "Include/*.hpp"
+        "Include/Config/*.hpp"
         "Include/Network/*.hpp"
         "Include/Protocol/*.hpp"
         "Include/Miscellaneous/*.hpp")
