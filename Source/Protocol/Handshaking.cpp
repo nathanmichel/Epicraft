@@ -20,9 +20,9 @@ void	prot::Handshaking::parseHandshake(const buffer_t &data, const int size, pro
 	int varIntSize = 0;
 
 	try {
-		int version = prot::Protocol::readVarInt(data, offset, size, varIntSize);
+		int version = misc::readVarInt(data, offset, size, varIntSize);
 		offset += varIntSize;
-		int addressLength = prot::Protocol::readVarInt(data, offset, size, varIntSize);
+		int addressLength = misc::readVarInt(data, offset, size, varIntSize);
 		offset += varIntSize;
 		std::string address(data.begin() + offset, data.begin() + offset + addressLength);
 		offset += addressLength;

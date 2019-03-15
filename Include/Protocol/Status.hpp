@@ -8,6 +8,8 @@
 #pragma once
 
 #include "Epicraft.hpp"
+#include "VarInt.hpp"
+#include "Base64.hpp"
 
 namespace mgr {
 	class Manager;

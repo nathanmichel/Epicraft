@@ -25,11 +25,6 @@ namespace prot {
 
 		bool	getIsRunning() const;
 
-		static int	readVarInt(const buffer_t &data, const std::size_t offset,
-					   const int size, int &resSize);
-		static void	writeVarInt(unsigned int value, buffer_t &data);
-		static int	getVarIntSize(unsigned int value);
-
 	private:
 		mgr::Manager		&_manager;
 		prot::Handshaking	_handshaking;

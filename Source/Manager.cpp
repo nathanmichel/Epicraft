@@ -21,7 +21,7 @@ void	mgr::Manager::run()
 		sleep(1);
 }
 
-void	mgr::Manager::callbackServer(const net::request_t *request)
+void	mgr::Manager::callback(const net::request_t *request)
 {
 	_protocol.addRequest(request);
 	if (!_protocol.getIsRunning()) {
@@ -30,7 +30,7 @@ void	mgr::Manager::callbackServer(const net::request_t *request)
 	}
 }
 
-void	mgr::Manager::callbackProtocol(const net::response_t *response)
+void	mgr::Manager::callback(const net::response_t *response)
 {
 	_server.putResponse(response);
 }

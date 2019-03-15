@@ -43,22 +43,7 @@ void		net::Session::handleRead(const boost::system::error_code &e)
 				  boost::asio::transfer_exactly(size), error);
 
 		net::request_t *request = new net::request_t { data, size, _status, _id };
-		_manager.callbackServer(request);
-		/*if (it == 2) {
-			writeVarInt(JSON.size() + 1 + 2);
-			_buffer[_i] = 0;
-			_i++;
-			writeVarInt(JSON.size());
-			std::memcpy(_buffer + _i, JSON.c_str(), JSON.size());
-			_i += JSON.size();
-			boost::asio::write(_socket, boost::asio::buffer(_buffer, _i));
-		} else if (it == 3) {
-			_i = 0;
-			writeVarInt(size);
-			std::memcpy(_buffer + _i, data, size);
-			_i += size;
-			boost::asio::write(_socket, boost::asio::buffer(_buffer, _i));
-			}*/
+		_manager.callback(request);
 		listen();
 	} else {
 		_server.removeSession(_id);

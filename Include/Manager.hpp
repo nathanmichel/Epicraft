@@ -24,8 +24,8 @@ namespace mgr {
 
 		void	run();
 
-		void	callbackServer(const net::request_t *request);
-		void	callbackProtocol(const net::response_t *response);
+		void	callback(const net::request_t *request);
+		void	callback(const net::response_t *response);
 
 	private:
 		net::TcpServer	_server;

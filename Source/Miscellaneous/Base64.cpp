@@ -8,12 +8,12 @@
 
 #include "Base64.hpp"
 
-static inline const std::string base64Chars =
+const std::string base64Chars =
         "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
         "abcdefghijklmnopqrstuvwxyz"
         "0123456789+/";
 
-std::string misc::base64Encode(std::string path) {
+std::string	misc::base64Encode(std::string path) {
     std::ifstream file(path);
     std::string str((std::istreambuf_iterator<char>(file)),
                     std::istreambuf_iterator<char>());
@@ -21,7 +21,7 @@ std::string misc::base64Encode(std::string path) {
     return base64Encode(str.c_str(), str.size());
 }
 
-std::string misc::base64Encode(char const* bytesToEncode, int len) {
+std::string	misc::base64Encode(char const* bytesToEncode, int len) {
     std::string ret;
     int i = 0;
     int j = 0;
