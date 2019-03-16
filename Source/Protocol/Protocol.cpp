@@ -8,7 +8,11 @@
 #include "Protocol.hpp"
 #include "Manager.hpp"
 
-prot::Protocol::Protocol(mgr::Manager &manager) : _manager(manager), _handshaking(manager), _status(manager)
+prot::Protocol::Protocol(mgr::Manager &manager) :
+	_manager(manager),
+	_handshaking(manager),
+	_status(manager),
+	_login(manager)
 {
 	_isRunning = false;
 }
@@ -27,7 +31,7 @@ void	prot::Protocol::parseProtocol()
 		else if (_requests[i]->status == prot::status)
 			_status.parseProtocol(_requests[i]);
 		else if (_requests[i]->status == prot::login)
-			std::cout << "Login\n";
+			_login.parseProtocol(_requests[i]);
 		else if (_requests[i]->status == prot::play)
 			std::cout << "Play\n";
 		else

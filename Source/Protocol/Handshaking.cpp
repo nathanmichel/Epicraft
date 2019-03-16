@@ -40,7 +40,7 @@ void	prot::Handshaking::parseHandshake(const buffer_t &data, const int size, pro
 
 void	prot::Handshaking::parseProtocol(const net::request_t *request)
 {
-	if (request->data[0] != 0) {
+	if (request->data[0] != 0x00) {
 		std::cerr << "Invalid Handshake" << std::endl;
 		return;
 	}

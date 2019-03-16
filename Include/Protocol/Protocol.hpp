@@ -10,6 +10,7 @@
 #include "Epicraft.hpp"
 #include "Handshaking.hpp"
 #include "Status.hpp"
+#include "Login.hpp"
 
 namespace mgr {
 	class Manager;
@@ -29,6 +30,7 @@ namespace prot {
 		mgr::Manager		&_manager;
 		prot::Handshaking	_handshaking;
 		prot::Status		_status;
+		prot::Login		_login;
 		net::requests_t		_requests;
 		bool			_isRunning;
 	};

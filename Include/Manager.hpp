@@ -30,6 +30,5 @@ namespace mgr {
 	private:
 		net::TcpServer	_server;
 		prot::Protocol	_protocol;
-		std::thread	_thread;
 	};
 }

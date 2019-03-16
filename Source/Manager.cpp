@@ -25,8 +25,8 @@ void	mgr::Manager::callback(const net::request_t *request)
 {
 	_protocol.addRequest(request);
 	if (!_protocol.getIsRunning()) {
-		_thread = std::thread(&prot::Protocol::parseProtocol, &_protocol);
-		_thread.detach();
+		std::thread thread(&prot::Protocol::parseProtocol, &_protocol);
+		thread.detach();
 	}
 }
 
