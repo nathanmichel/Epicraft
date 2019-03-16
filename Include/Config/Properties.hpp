@@ -27,7 +27,7 @@ namespace config {
         const std::string _file = "server.properties";
         std::time_t _lastUpdated;
         std::map<std::string, std::string> _properties = {};
-        const std::array<std::string, 6> _nonRefresh = {
+        const std::vector<std::string> _nonRefresh = {
                 "server-ip", "server-port", "ressource-pack",
                 "level-name", "white-list", "difficulty"
         };
