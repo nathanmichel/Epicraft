@@ -21,11 +21,15 @@ namespace config {
         std::string &operator[](std::string &key);
 
     private:
-        void update();
+        void update(bool refreshed);
 
     private:
         const std::string _file = "server.properties";
         std::time_t _lastUpdated;
         std::map<std::string, std::string> _properties = {};
+        const std::array<std::string, 6> _nonRefresh = {
+                "server-ip", "server-port", "ressource-pack",
+                "level-name", "white-list", "difficulty"
+        };
     };
 };

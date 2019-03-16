@@ -8,9 +8,12 @@
 #pragma once
 
 #include <iostream>
+#include <algorithm>
 #include <vector>
+#include <array>
+#include <map>
 #include <fstream>
 #include <string>
-#include <map>
 
 #include "Types.hpp"
+#include "Log.hpp"
