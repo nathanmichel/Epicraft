@@ -13,6 +13,7 @@
 #include <map>
 #include <fstream>
 #include <string>
+#include <cstddef>
 
 #include "Types.hpp"
 #include "Log.hpp"
