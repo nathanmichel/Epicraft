@@ -9,6 +9,7 @@
 
 #include <vector>
 #include <array>
+#include <boost/multiprecision/cpp_int.hpp>
 
 typedef std::vector<char> buffer_t;
 
@@ -40,6 +41,7 @@ namespace net {
 
 namespace game {
 	typedef unsigned char angle_t;
+    typedef boost::multiprecision::uint128_t uuid_t;
 
 	enum Dimension : int {
 		nether = -1,

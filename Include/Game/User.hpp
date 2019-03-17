@@ -7,8 +7,6 @@
 
 #pragma once
 
-#include <boost/multiprecision/cpp_int.hpp>
-
 #include "Epicraft.hpp"
 
 namespace game {
@@ -25,7 +23,7 @@ namespace game {
         float _pitch;
         std::byte gamemode;
         game::Dimension dimension;
-        boost::multiprecision::uint128_t _uid;
+        game::uuid_t _uuid;
         // Metadata; (ça a l'air supper marrant a faire ça)
 
     };
