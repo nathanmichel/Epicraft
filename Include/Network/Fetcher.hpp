@@ -24,9 +24,9 @@ namespace net {
     class Fetcher {
     public:
         Fetcher(boost::asio::io_service &ioService, boost::asio::ssl::context &context,
-                const std::string &path);
+                const std::string &path, const std::string &host);
 
-        std::stringstream &getHeader();
+        std::string getHeader();
         std::string getContent();
 
     private:
@@ -45,7 +45,6 @@ namespace net {
         boost::asio::ssl::stream<boost::asio::ip::tcp::socket> _socket;
         boost::asio::streambuf _request;
         boost::asio::streambuf _response;
-        const std::string _host = "api.mojang.com";
         std::stringstream _header;
         std::stringstream _content;
     };

@@ -7,11 +7,12 @@
 
 #pragma once
 
-#include <sstream>
-#include <iomanip>
+#include <cstdlib>
 
 #include "Epicraft.hpp"
 #include "Fetcher.hpp"
+#include "HexUUID.hpp"
+#include "Base64.hpp"
 
 namespace net {
     class MojangAPI {
@@ -20,10 +21,12 @@ namespace net {
 
         game::uuid_t getUUID(std::string &playerName);
         game::uuid_t getUUID(std::string &playerName, std::time_t time);
+        std::vector<std::string> getNameHistory(game::uuid_t &uuid);
+        game::playerSkin_t getProfile(game::uuid_t &uuid);
 
     private:
-        game::uuid_t stringToUUID(std::string &str);
-        std::string makeRequest(std::string &path);
+        std::string parseKey(std::string &str, std::string key);
+        std::string makeRequest(const std::string &path, std::string host = "api.mojang.com");
 
     private:
         boost::asio::ssl::context _context;

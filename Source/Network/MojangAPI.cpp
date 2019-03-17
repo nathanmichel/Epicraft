@@ -14,28 +14,57 @@ net::MojangAPI::MojangAPI() : _context(boost::asio::ssl::context::sslv23) {
 game::uuid_t net::MojangAPI::getUUID(std::string &playerName) {
     std::string path = "/users/profiles/minecraft/" + playerName;
     std::string content = this->makeRequest(path);
-    return stringToUUID(content);
+    std::string uuid = parseKey(content, "id");
+    return misc::hexToUUID(uuid);
 }
 
 game::uuid_t net::MojangAPI::getUUID(std::string &playerName, std::time_t time) {
     std::string path = "/users/profiles/minecraft/" + playerName + "?at=" + std::to_string(time);
     std::string content = this->makeRequest(path);
-    return stringToUUID(content);
+    std::string uuid = parseKey(content, "id");
+    return misc::hexToUUID(uuid);
 }
 
-game::uuid_t net::MojangAPI::stringToUUID(std::string &str) {
-    std::string uuidStr = str.substr(str.find("\"id\":\"") + 6, str.size());
-    uuidStr = uuidStr.substr(0, uuidStr.find('\"'));
-    std::stringstream stream;
-    game::uuid_t uuid;
-    stream << uuidStr;
-    stream >> std::hex >> uuid;
-    return uuid;
+std::vector<std::string> net::MojangAPI::getNameHistory(game::uuid_t &uuid) {
+    std::vector<std::string> names = {};
+    std::string path = "/user/profiles/" + misc::UUIDToHex(uuid) + "/names";
+    std::string content = this->makeRequest(path);
+    while (content.find("\"name\":\"") != std::string::npos) {
+        content = content.substr(content.find("\"name\":\"") + 8, content.size());
+        std::string name = content.substr(0, content.find('\"'));
+        names.push_back(name);
+    }
+    return names;
 }
 
-std::string net::MojangAPI::makeRequest(std::string &path) {
+game::playerSkin_t net::MojangAPI::getProfile(game::uuid_t &uuid) {
+    std::string path = "/session/minecraft/profile/" + misc::UUIDToHex(uuid);
+    std::string content = this->makeRequest(path, "sessionserver.mojang.com");
+    std::string base64Str = parseKey(content, "value");
+    std::string textures = misc::base64Decode(base64Str);
+    game::playerSkin_t skin;
+    skin.timestamp = std::strtol(parseKey(textures, "timestamp").c_str(), nullptr, 10);
+    skin.uuid = uuid;
+    skin.name = parseKey(textures, "profileName");
+    skin.skinUrl = parseKey(textures, "url");
+    if (textures.find("\"model\":\"") != std::string::npos)
+        skin.modelType = game::slim;
+    if (textures.find("\"CAPE\":\"") != std::string::npos) {
+        textures = textures.substr(textures.find("\"CAPE\":\"") + 8, textures.size());
+        skin.capeUrl = parseKey(textures, "url");
+    }
+    return skin;
+}
+
+std::string net::MojangAPI::parseKey(std::string &str, std::string key) {
+    std::string value = str.substr(str.find("\"" + key + "\":") + 4 + key.size(), str.size());
+    value = value.substr(0, value.find('\"'));
+    return value;
+}
+
+std::string net::MojangAPI::makeRequest(const std::string &path, const std::string host) {
     boost::asio::io_service ioService;
-    net::Fetcher fetch(ioService, _context, path);
+    net::Fetcher fetch(ioService, _context, path, host);
     ioService.run();
     return fetch.getContent();
 }

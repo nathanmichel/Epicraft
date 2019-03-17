@@ -8,17 +8,18 @@
 #include "Fetcher.hpp"
 
 net::Fetcher::Fetcher(boost::asio::io_service &ioService, boost::asio::ssl::context &context,
-                      const std::string &path) : _resolver(ioService), _socket(ioService, context) {
+                      const std::string &path, const std::string &host)
+        : _resolver(ioService), _socket(ioService, context) {
     std::ostream requestStream(&_request);
     requestStream << "GET " << path << " HTTP/1.0\r\n";
-    requestStream << "Host: " << _host << "\r\n";
+    requestStream << "Host: " << host << "\r\n";
     requestStream << "Accept: */*\r\n";
     requestStream << "Connection: close\r\n\r\n";
 
 
-    misc::toLog("Request", "GET on " + _host + path);
+    misc::toLog("Request", "GET on " + host + path);
 
-    tcp::resolver::query query(_host, "https");
+    tcp::resolver::query query(host, "https");
     _resolver.async_resolve(query, boost::bind(&Fetcher::handleResolve, this,
                                                boost::asio::placeholders::error,
                                                boost::asio::placeholders::iterator));
@@ -33,7 +34,7 @@ void net::Fetcher::handleResolve(const boost::system::error_code &err, tcp::reso
                                    boost::bind(&Fetcher::handleConnect, this,
                                                boost::asio::placeholders::error));
     } else
-        std::cout << "Error resolve: " << err.message() << "\n";
+        throw std::runtime_error("Error resolve: " + err.message() + "\n");
 }
 
 bool net::Fetcher::verifyCertificate(bool preverified, boost::asio::ssl::verify_context &contex) {
@@ -47,7 +48,7 @@ void net::Fetcher::handleConnect(const boost::system::error_code &err) {
                                 boost::bind(&Fetcher::handleHandshake, this,
                                             boost::asio::placeholders::error));
     } else
-        std::cout << "Connect failed: " << err.message() << "\n";
+        throw std::runtime_error("Connect failed: " + err.message() + "\n");
 }
 
 void net::Fetcher::handleHandshake(const boost::system::error_code &err) {
@@ -56,7 +57,7 @@ void net::Fetcher::handleHandshake(const boost::system::error_code &err) {
                                  boost::bind(&Fetcher::handleWriteRequest, this,
                                              boost::asio::placeholders::error));
     } else
-        std::cout << "Handshake failed: " << err.message() << "\n";
+        throw std::runtime_error("Handshaked failed: " + err.message() + "\n");
 }
 
 void net::Fetcher::handleWriteRequest(const boost::system::error_code &err) {
@@ -65,7 +66,7 @@ void net::Fetcher::handleWriteRequest(const boost::system::error_code &err) {
                                       boost::bind(&Fetcher::handleReadStatus, this,
                                                   boost::asio::placeholders::error));
     } else
-        std::cout << "Error write req: " << err.message() << "\n";
+        throw std::runtime_error("Error write request: " + err.message() + "\n");
 }
 
 void net::Fetcher::handleReadStatus(const boost::system::error_code &err) {
@@ -77,21 +78,17 @@ void net::Fetcher::handleReadStatus(const boost::system::error_code &err) {
         responseStream >> statusCode;
         std::string statusMessage;
         std::getline(responseStream, statusMessage);
-        if (!responseStream || httpVersion.substr(0, 5) != "HTTP/") {
-            std::cout << "Invalid response\n";
-            return;
-        }
-        if (statusCode != 200) {
-            std::cout << "Response returned with status code ";
-            std::cout << statusCode << "\n";
-            return;
-        }
+        if (!responseStream || httpVersion.substr(0, 5) != "HTTP/")
+            throw std::runtime_error("Invalid response\n");
+        if (statusCode != 200)
+            throw std::runtime_error("Response returned with status code"
+                                     + std::to_string(statusCode) + "\n");
 
         boost::asio::async_read_until(_socket, _response, "\r\n\r\n",
                                       boost::bind(&Fetcher::handleReadHeaders, this,
                                                   boost::asio::placeholders::error));
     } else
-        std::cout << "Error: " << err.message() << "\n";
+        throw std::runtime_error("Error read request: " + err.message() + "\n");
 }
 
 void net::Fetcher::handleReadHeaders(const boost::system::error_code &err) {
@@ -110,7 +107,7 @@ void net::Fetcher::handleReadHeaders(const boost::system::error_code &err) {
                                 boost::bind(&Fetcher::handleReadContent, this,
                                             boost::asio::placeholders::error));
     } else
-        std::cout << "Error: " << err << "\n";
+        throw std::runtime_error("Error read request header: " + err.message() + "\n");
 }
 
 void net::Fetcher::handleReadContent(const boost::system::error_code &err) {
@@ -122,11 +119,11 @@ void net::Fetcher::handleReadContent(const boost::system::error_code &err) {
                                 boost::bind(&Fetcher::handleReadContent, this,
                                             boost::asio::placeholders::error));
     } else if (err != boost::asio::error::eof)
-        std::cout << "Error: " << err << "\n";
+        throw std::runtime_error("Error read request content: " + err.message() + "\n");
 }
 
-std::stringstream &net::Fetcher::getHeader() {
-    return _header;
+std::string net::Fetcher::getHeader() {
+    return _header.str();
 }
 
 std::string net::Fetcher::getContent() {

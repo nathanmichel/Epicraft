@@ -13,5 +13,6 @@
 
 namespace misc {
     std::string	base64Encode(std::string path);
-    std::string	base64Encode(char const* bytesToEncode, int len);
+    std::string	base64Encode(char const *bytesToEncode, int len);
+    std::string base64Decode(std::string const &encodedStr);
 };

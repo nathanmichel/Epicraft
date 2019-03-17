@@ -48,4 +48,18 @@ namespace game {
 		overworld = 0,
 		end = 1
 	};
+
+	enum SkinArmsModel {
+        square,
+        slim
+	};
+
+    typedef struct {
+        std::time_t timestamp;
+        game::uuid_t uuid;
+        std::string name;
+        std::string skinUrl;
+        std::string capeUrl = "";
+        SkinArmsModel modelType = square;
+    }   playerSkin_t;
 };
