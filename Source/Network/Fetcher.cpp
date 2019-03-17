@@ -16,7 +16,7 @@ net::Fetcher::Fetcher(boost::asio::io_service &ioService, boost::asio::ssl::cont
     requestStream << "Connection: close\r\n\r\n";
 
 
-    misc::toLog("Request", "GET " + path + " HTTP/1.0");
+    misc::toLog("Request", "GET on " + _host + path);
 
     tcp::resolver::query query(_host, "https");
     _resolver.async_resolve(query, boost::bind(&Fetcher::handleResolve, this,
