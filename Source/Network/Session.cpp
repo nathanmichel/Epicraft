@@ -74,8 +74,22 @@ int		net::Session::readVarInt()
 
 void				net::Session::putResponse(const net::response_t *response)
 {
-	if (response->size > 0)
-		boost::asio::write(_socket, boost::asio::buffer(response->data, response->size));
+	if (response->size > 0) {
+		if (response->size > 64 && _status == prot::play) {
+			buffer_t data1;
+			buffer_t data2;
+
+			data1.reserve(64);
+			data2.reserve(response->size - 64);
+			std::copy(response->data.begin(), response->data.begin() + 64, data1.begin());
+			std::copy(response->data.begin() + 64, response->data.end(), data2.begin());
+			boost::asio::write(_socket, boost::asio::buffer(data1, 64));
+			boost::asio::write(_socket, boost::asio::buffer(data2, response->size - 64));
+		} else {
+			boost::asio::write(_socket, boost::asio::buffer(response->data, response->size));
+		}
+		delete response;
+	}
 }
 
 boost::asio::ip::tcp::socket	&net::Session::getSocket()

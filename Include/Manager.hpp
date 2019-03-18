@@ -27,8 +27,11 @@ namespace mgr {
 		void	callback(const net::request_t *request);
 		void	callback(const net::response_t *response);
 
+		void	threadStopping();
+
 	private:
 		net::TcpServer	_server;
 		prot::Protocol	_protocol;
+		bool		_threadRunning;
 	};
 }

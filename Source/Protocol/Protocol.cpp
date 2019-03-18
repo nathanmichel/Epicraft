@@ -12,36 +12,37 @@ prot::Protocol::Protocol(mgr::Manager &manager) :
 	_manager(manager),
 	_handshaking(manager),
 	_status(manager),
-	_login(manager)
+	_play(manager),
+	_login(manager, _play)
 {
-	_isRunning = false;
+	_requests.reserve(prot::REQUEST_BUFFER_SIZE);
+	_writeIdx = 0;
+	_readIdx = 0;
 }
 
 void	prot::Protocol::addRequest(const net::request_t *request)
 {
-	_requests.push_back(request);
+	MUTEX.lock();
+	_requests[_readIdx] = request;
+	_readIdx = (_readIdx + 1) % REQUEST_BUFFER_SIZE;
+	MUTEX.unlock();
 }
 
 void	prot::Protocol::parseProtocol()
 {
-	_isRunning = true;
-	for (std::size_t i = 0 ; i < _requests.size() ; i++) {
-		if (_requests[i]->status == prot::handshaking)
-			_handshaking.parseProtocol(_requests[i]);
-		else if (_requests[i]->status == prot::status)
-			_status.parseProtocol(_requests[i]);
-		else if (_requests[i]->status == prot::login)
-			_login.parseProtocol(_requests[i]);
-		else if (_requests[i]->status == prot::play)
-			std::cout << "Play\n";
+	while (_writeIdx != _readIdx) {
+		if (_requests[_writeIdx]->status == prot::handshaking)
+			_handshaking.parseProtocol(_requests[_writeIdx]);
+		else if (_requests[_writeIdx]->status == prot::status)
+			_status.parseProtocol(_requests[_writeIdx]);
+		else if (_requests[_writeIdx]->status == prot::login)
+			_login.parseProtocol(_requests[_writeIdx]);
+		else if (_requests[_writeIdx]->status == prot::play)
+			std::cout << "Play" << std::hex << (int) _requests[_writeIdx]->data[0] << std::endl;
 		else
 			std::cerr << "Invalid status\n";
+		delete _requests[_writeIdx];
+		_writeIdx = (_writeIdx + 1) % REQUEST_BUFFER_SIZE;
 	}
-	_requests.clear();
-	_isRunning = false;
-}
-
-bool	prot::Protocol::getIsRunning() const
-{
-	return _isRunning;
+	_manager.threadStopping();
 }

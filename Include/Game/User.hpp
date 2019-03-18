@@ -21,7 +21,7 @@ namespace game {
         double _z;
         float _yaw;
         float _pitch;
-        std::byte gamemode;
+        unsigned char gamemode;
         game::Dimension dimension;
         game::uuid_t _uuid;
         // Metadata; (ça a l'air supper marrant a faire ça)

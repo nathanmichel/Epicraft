@@ -22,7 +22,7 @@ void	prot::Status::getServerInformation(const std::size_t id)
 	std::string json = JSON + misc::base64Encode("../server-icon.png") + "\"}";
 
 	misc::writeVarInt(json.size() + 1 + misc::getVarIntSize(json.size()), response->data);
-	response->data.push_back(0);
+	response->data.push_back(0x00);
         misc::writeVarInt(json.size(), response->data);
 	std::copy(json.begin(), json.end(), std::back_inserter<std::vector<char>> (response->data));
 	response->size = response->data.size();

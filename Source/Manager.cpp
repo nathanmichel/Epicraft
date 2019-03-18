@@ -9,7 +9,7 @@
 
 mgr::Manager::Manager() : _server(25565, *this), _protocol(*this)
 {
-
+	_threadRunning = false;
 }
 
 void	mgr::Manager::run()
@@ -24,7 +24,10 @@ void	mgr::Manager::run()
 void	mgr::Manager::callback(const net::request_t *request)
 {
 	_protocol.addRequest(request);
-	if (!_protocol.getIsRunning()) {
+	if (!_threadRunning) {
+		MUTEX.lock();
+		_threadRunning = true;
+		MUTEX.unlock();
 		std::thread thread(&prot::Protocol::parseProtocol, &_protocol);
 		thread.detach();
 	}
@@ -33,4 +36,11 @@ void	mgr::Manager::callback(const net::request_t *request)
 void	mgr::Manager::callback(const net::response_t *response)
 {
 	_server.putResponse(response);
+}
+
+void	mgr::Manager::threadStopping()
+{
+	MUTEX.lock();
+	_threadRunning = false;
+	MUTEX.unlock();
 }

@@ -11,12 +11,15 @@
 #include "Handshaking.hpp"
 #include "Status.hpp"
 #include "Login.hpp"
+#include "Play.hpp"
 
 namespace mgr {
 	class Manager;
 }
 
 namespace prot {
+	const std::size_t REQUEST_BUFFER_SIZE = 128;
+
 	class Protocol {
 	public:
 		Protocol(mgr::Manager &manager);
@@ -24,14 +27,14 @@ namespace prot {
 		void	addRequest(const net::request_t *request);
 		void	parseProtocol();
 
-		bool	getIsRunning() const;
-
 	private:
 		mgr::Manager		&_manager;
 		prot::Handshaking	_handshaking;
 		prot::Status		_status;
+		prot::Play		_play;
 		prot::Login		_login;
 		net::requests_t		_requests;
-		bool			_isRunning;
+		std::size_t		_writeIdx;
+		std::size_t		_readIdx;
 	};
 }

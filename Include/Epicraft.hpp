@@ -13,7 +13,9 @@
 #include <map>
 #include <fstream>
 #include <string>
-#include <cstddef>
+#include <mutex>
 
 #include "Types.hpp"
 #include "Log.hpp"
+
+static std::mutex MUTEX;
