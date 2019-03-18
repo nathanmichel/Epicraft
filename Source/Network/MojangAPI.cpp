@@ -11,23 +11,23 @@ net::MojangAPI::MojangAPI() : _context(boost::asio::ssl::context::sslv23) {
     _context.set_default_verify_paths();
 }
 
-game::uuid_t net::MojangAPI::getUUID(std::string &playerName) {
+std::string net::MojangAPI::getUUID(std::string &playerName) {
     std::string path = "/users/profiles/minecraft/" + playerName;
     std::string content = this->makeRequest(path);
     std::string uuid = parseKey(content, "id");
-    return misc::hexToUUID(uuid);
+    return misc::formatUUID(uuid);
 }
 
-game::uuid_t net::MojangAPI::getUUID(std::string &playerName, std::time_t time) {
+std::string net::MojangAPI::getUUID(std::string &playerName, std::time_t time) {
     std::string path = "/users/profiles/minecraft/" + playerName + "?at=" + std::to_string(time);
     std::string content = this->makeRequest(path);
     std::string uuid = parseKey(content, "id");
-    return misc::hexToUUID(uuid);
+    return misc::formatUUID(uuid);
 }
 
-std::vector<std::string> net::MojangAPI::getNameHistory(game::uuid_t &uuid) {
+std::vector<std::string> net::MojangAPI::getNameHistory(std::string &uuid) {
     std::vector<std::string> names = {};
-    std::string path = "/user/profiles/" + misc::UUIDToHex(uuid) + "/names";
+    std::string path = "/user/profiles/" + misc::basicUUID(uuid) + "/names";
     std::string content = this->makeRequest(path);
     while (content.find("\"name\":\"") != std::string::npos) {
         content = content.substr(content.find("\"name\":\"") + 8, content.size());
@@ -37,8 +37,8 @@ std::vector<std::string> net::MojangAPI::getNameHistory(game::uuid_t &uuid) {
     return names;
 }
 
-game::playerSkin_t net::MojangAPI::getProfile(game::uuid_t &uuid) {
-    std::string path = "/session/minecraft/profile/" + misc::UUIDToHex(uuid);
+game::playerSkin_t net::MojangAPI::getProfile(std::string &uuid) {
+    std::string path = "/session/minecraft/profile/" + misc::basicUUID(uuid);
     std::string content = this->makeRequest(path, "sessionserver.mojang.com");
     std::string base64Str = parseKey(content, "value");
     std::string textures = misc::base64Decode(base64Str);

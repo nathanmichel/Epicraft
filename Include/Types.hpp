@@ -41,7 +41,6 @@ namespace net {
 
 namespace game {
 	typedef unsigned char angle_t;
-    typedef boost::multiprecision::uint128_t uuid_t;
 
 	enum Dimension : int {
 		nether = -1,
@@ -56,7 +55,7 @@ namespace game {
 
     typedef struct {
         std::time_t timestamp;
-        game::uuid_t uuid;
+        std::string uuid;
         std::string name;
         std::string skinUrl;
         std::string capeUrl = "";

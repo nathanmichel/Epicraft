@@ -11,7 +11,7 @@
 
 #include "Epicraft.hpp"
 #include "Fetcher.hpp"
-#include "HexUUID.hpp"
+#include "FormatUUID.hpp"
 #include "Base64.hpp"
 
 namespace net {
@@ -19,10 +19,10 @@ namespace net {
     public:
         MojangAPI();
 
-        game::uuid_t getUUID(std::string &playerName);
-        game::uuid_t getUUID(std::string &playerName, std::time_t time);
-        std::vector<std::string> getNameHistory(game::uuid_t &uuid);
-        game::playerSkin_t getProfile(game::uuid_t &uuid);
+        std::string getUUID(std::string &playerName);
+        std::string getUUID(std::string &playerName, std::time_t time);
+        std::vector<std::string> getNameHistory(std::string &uuid);
+        game::playerSkin_t getProfile(std::string &uuid);
 
     private:
         std::string parseKey(std::string &str, std::string key);

@@ -23,7 +23,7 @@ namespace game {
         float _pitch;
         unsigned char gamemode;
         game::Dimension dimension;
-        game::uuid_t _uuid;
+        std::string _uuid;
         // Metadata; (ça a l'air supper marrant a faire ça)
 
     };
