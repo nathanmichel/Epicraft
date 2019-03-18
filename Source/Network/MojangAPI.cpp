@@ -57,7 +57,9 @@ game::playerSkin_t net::MojangAPI::getProfile(std::string &uuid) {
 }
 
 std::string net::MojangAPI::parseKey(std::string &str, std::string key) {
-    std::string value = str.substr(str.find("\"" + key + "\":") + 4 + key.size(), str.size());
+    std::string value = str.substr(str.find("\"" + key + "\":") + 3 + key.size(), str.size());
+    if (value.front() == '\"')
+        value = value.substr(1, value.size());
     value = value.substr(0, value.find('\"'));
     return value;
 }
