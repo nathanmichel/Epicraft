@@ -17,18 +17,14 @@ prot::Handshaking::Handshaking(mgr::Manager &manager) : _manager(manager)
 void	prot::Handshaking::parseHandshake(const buffer_t &data, const int size, prot::StateStatus &status)
 {
 	std::size_t offset = 1; // To skip Packet ID
-	int varIntSize = 0;
 
 	try {
-		int version = misc::readVarInt(data, offset, size, varIntSize);
-		offset += varIntSize;
-		int addressLength = misc::readVarInt(data, offset, size, varIntSize);
-		offset += varIntSize;
+		int version = misc::readVarInt(data, offset, size);
+		int addressLength = misc::readVarInt(data, offset, size);
 		std::string address(data.begin() + offset, data.begin() + offset + addressLength);
 		offset += addressLength;
 		unsigned short port = ((unsigned char) data[offset] << 8) | ((unsigned char) data[offset + 1]);
 		offset += 2;
-
 		if (data[offset] == prot::status || data[offset] == prot::login) {
 			status = (prot::StateStatus) data[offset];
 		}

@@ -36,15 +36,13 @@ void	prot::Login::loginSuccess(const std::string uuid, const std::string name, c
 void	prot::Login::parseLogin(const net::request_t *request)
 {
 	std::size_t offset = 1;
-	int varIntSize = 0;
 
 	try {
-		int nameLength = misc::readVarInt(request->data, offset, request->size, varIntSize);
+		int nameLength = misc::readVarInt(request->data, offset, request->size);
 		if (nameLength > 16) {
 			std::cerr << "Invalid request (the username is too long)" << std::endl;
 			return;
 		}
-		offset += varIntSize;
 		std::string name(request->data.begin() + offset, request->data.begin() + offset + nameLength);
 
 		_mojangAPI.getUUID(name);

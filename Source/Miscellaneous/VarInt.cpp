@@ -7,21 +7,22 @@
 
 #include "VarInt.hpp"
 
-int     misc::readVarInt(const buffer_t &data, const std::size_t offset, const int size, int &resSize)
+int     misc::readVarInt(const buffer_t &data, std::size_t &offset, const int size)
 {
 	int result = 0;
+	int nbrSize = 0;
 	int value;
 
-	resSize = 0;
-	if (size <= 0 || resSize + offset >= size)
+	if (size <= 0 || offset >= size)
 		throw std::runtime_error("The string is empty");
 	do {
-		value = (data[resSize + offset] & 0b01111111);
-		result = result | (value << (7 * resSize));
-		resSize++;
-		if (resSize > 5)
+		value = (data[offset] & 0b01111111);
+		result = result | (value << (7 * nbrSize));
+		offset++;
+		nbrSize++;
+		if (nbrSize > 5)
 			throw std::runtime_error("The number is too big");
-	} while ((data[resSize + offset - 1] & 0b10000000) != 0 && resSize + offset < size); //-1 cause of incr b4
+	} while ((data[offset - 1] & 0b10000000) != 0 && offset < size); //-1 cause of incr b4
 	return result;
 }
 
